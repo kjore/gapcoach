@@ -59,7 +59,7 @@ export default async function renderTrace(root, ctx) {
             h(
               "div",
               { class: "trace__row" },
-              h("div", { class: "trace__ts", text: (item.ts || "").slice(4, 19) }),
+              h("div", { class: "trace__ts", text: (item.ts || "").slice(5, 19).replace("T", " ") }),
               h("div", { class: `trace__kind${item.kind === "memory" ? " trace__kind--pc" : ""}`, text: `${item.kind}/${item.action}` }),
               h("div", { class: "trace__detail", text: JSON.stringify(item.detail) })
             )
