@@ -2,7 +2,7 @@
 
 > 先诊断，再给证据，最后记住你。一个可以直接在浏览器里玩的复习教练：混合检索找材料，学习记忆记住你的薄弱点。
 
-**在线体验：<https://gapcoach-2pf0jobp824.qoder.zone>**（公开，无需登录，点开即用；发布至 Qoder Sites）
+**在线体验：<https://gapcoach-2i2bg8e17m0.qoder.zone>**（公开，无需登录，点开即用；发布至 Qoder Sites）
 
 参加 **2026 Qoder 高校创造力大赛 · StudyHack 赛道**。本版本为纯静态在线 Demo：无后端、无数据库、无 API Key，所有检索与记忆逻辑在浏览器内运行，数据保存在 localStorage。
 
@@ -28,7 +28,7 @@
 
 ### 在线（推荐）
 
-直接打开 <https://gapcoach-2pf0jobp824.qoder.zone>，输入称呼，开始 10 题诊断。手机、平板、桌面浏览器均可。
+直接打开 <https://gapcoach-2i2bg8e17m0.qoder.zone>，输入称呼，开始 10 题诊断。手机、平板、桌面浏览器均可。
 
 ### 本地
 

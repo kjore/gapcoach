@@ -16,7 +16,7 @@
 ## 一、硬性要求
 
 - [ ] 项目主要使用 Qoder 开发，过程可核对：`docs/DEV_LOG.md` 两章 + `docs/dev-log/` 对话截图。
-- [ ] 作品部署至 Qoder Sites，**公开可访问、无需登录**（重新发布为 `app/frontend/` 在线应用后验证）。
+- [x] 作品部署至 Qoder Sites，**公开可访问、无需登录**：<https://gapcoach-2i2bg8e17m0.qoder.zone>（2026-11-06 以当前账号新站发布 `app/frontend/`，访问策略 public，线上实测首页与题库加载正常）。
 - [ ] 用未登录的独立浏览器会话打开在线 Demo，完整跑一轮：诊断 → 报告 → 计划 → 练习 → 进度 → 轨迹。
 - [ ] 手机端打开不崩、关键按钮可点（在线 Demo 为纯静态应用，需实测窄屏）。
 - [ ] 在天池大赛论坛发布作品帖（截止 2026-11-30 18:00），草稿见 `docs/SUBMISSION_POST.md`。
@@ -26,7 +26,7 @@
 | 材料 | 要求 | 产出位置 | 状态 | 备注 |
 | --- | --- | --- | --- | --- |
 | 作品名称 + 赛道 | 知隙 GapCoach · StudyHack | `docs/SUBMISSION_POST.md` | 草稿完成 | |
-| 在线体验链接 | Qoder Sites 公开 URL | 待重新发布 | 未完成 | 当前 URL 仍是旧展示页 |
+| 在线体验链接 | Qoder Sites 公开 URL | <https://gapcoach-2i2bg8e17m0.qoder.zone> | 已发布并公开 | 旧站 `gapcoach-2pf0jobp824` 在旧账号下，不再使用 |
 | 源码仓库 | 公开 GitHub 仓库 | 待创建并推送 | 未完成 | 本地仓库已就绪（main：`923c7a5` → `30aabc5`） |
 | Qoder 账号 | UID / 用户名 | — | 待用户填写 | UID `019e959e-97cb-717a-8eb0-66cab9d8499b`（沿用，需确认参赛账号一致） |
 | 开发过程截图 | Qoder 对话/开发截图 | `docs/dev-log/`（旧 5 张）+ 本轮新增 | 部分完成 | 建议补：引擎移植、浏览器验收对话截图 |
