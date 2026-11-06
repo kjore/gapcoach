@@ -17,7 +17,7 @@ export default async function renderPlan(root, ctx) {
       state.plan = plan;
     } catch (error) {
       toast(error.message || "计划加载失败");
-      root.replaceChildren(h("div", { class: "empty" }, h("h3", { text: "计划暂时生成不了" }), h("p", { text: "请确认后端与 PowerContext 已启动。" })));
+      root.replaceChildren(h("div", { class: "empty" }, h("h3", { text: "计划暂时生成不了" }), h("p", { text: "请刷新页面重试。" })));
       return;
     }
   }
@@ -51,7 +51,7 @@ export default async function renderPlan(root, ctx) {
               h("div", { class: "cite__body", text: item.materials[0].content.slice(0, 110) + "…" }),
               h("div", {
                 class: "cite__score",
-                text: `seekdb 命中 · 检索 ${item.materials[0].score_parts?.retrieval ?? "—"} / 薄弱加权 ${item.materials[0].score_parts?.weakness ?? "—"}`,
+                text: `检索命中 · 检索 ${item.materials[0].score_parts?.retrieval ?? "—"} / 薄弱加权 ${item.materials[0].score_parts?.weakness ?? "—"}`,
               })
             )
           : null,
@@ -142,7 +142,7 @@ export default async function renderPlan(root, ctx) {
       h(
         "p",
         { class: "hint", style: { marginTop: "32px" } },
-        "计划由 seekdb 在材料库中做 IK 全文 + 向量 + 标量过滤的混合检索，再由 PowerContext 中的薄弱点记忆调整排序。"
+        "计划在材料库中做全文 + 向量的混合检索（RRF 融合），再按你的薄弱点记忆调整排序。"
       )
     )
   );

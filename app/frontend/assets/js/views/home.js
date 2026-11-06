@@ -51,7 +51,7 @@ export default async function renderHome(root, ctx) {
           ctx.refreshRail();
           ctx.navigate(session.answered > 0 ? "plan" : "diagnostic");
         } catch (error) {
-          toast(error.message || "连接后端失败，请确认服务已启动。");
+          toast(error.message || "本地引擎初始化失败，请刷新重试。");
           startBtn.disabled = false;
           startBtn.replaceChildren("开始 10 题诊断", h("span", { class: "arrow", text: "→" }));
         }
@@ -132,9 +132,9 @@ export default async function renderHome(root, ctx) {
       h(
         "div",
         { class: "home__foot" },
-        h("span", { text: "SEEKDB · IK 全文 + 向量 + 标量混合检索" }),
-        h("span", { text: "POWERCONTEXT · 跨会话学习记忆" }),
-        h("span", { text: "本地优先 · 无需登录" })
+        h("span", { text: "混合检索 · 全文 + 向量 RRF 融合 + 薄弱加权" }),
+        h("span", { text: "学习记忆 · 跨会话记住你的薄弱点" }),
+        h("span", { text: "点开即用 · 无需登录" })
       )
     )
   );

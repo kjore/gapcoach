@@ -43,23 +43,23 @@ function paintNav() {
 function paintTechline() {
   const health = state.health;
   if (!health) return;
-  const seekdbOk = health.status === "ok" && (health.seekdb?.materials ?? 0) > 0;
-  const memoryOk = Boolean(health.powercontext?.online);
+  const retrievalOk = health.status === "ok" && (health.engine?.materials ?? 0) > 0;
+  const memoryOk = Boolean(health.memory?.online);
   const dots = document.getElementById("techline")?.querySelectorAll(".dot") || [];
   dots.forEach((dot) => {
-    if (dot.dataset.svc === "seekdb") {
-      dot.classList.toggle("is-on", seekdbOk);
-      dot.classList.toggle("is-off", !seekdbOk);
-      dot.title = `seekdb · ${health.seekdb?.materials ?? 0} 份材料 / ${health.seekdb?.questions ?? 0} 道题`;
+    if (dot.dataset.svc === "retrieval") {
+      dot.classList.toggle("is-on", retrievalOk);
+      dot.classList.toggle("is-off", !retrievalOk);
+      dot.title = `混合检索 · ${health.engine?.materials ?? 0} 份材料 / ${health.engine?.questions ?? 0} 道题`;
     }
-    if (dot.dataset.svc === "powercontext") {
+    if (dot.dataset.svc === "memory") {
       dot.classList.toggle("is-on", memoryOk);
       dot.classList.toggle("is-off", !memoryOk);
-      dot.title = `PowerContext · ${health.powercontext?.database || "offline"}`;
+      dot.title = `学习记忆 · ${health.memory?.backend || "offline"}`;
     }
   });
   const line = document.getElementById("techline");
-  if (line) line.dataset.ready = seekdbOk && memoryOk ? "on" : "off";
+  if (line) line.dataset.ready = retrievalOk && memoryOk ? "on" : "off";
 }
 
 function paintRail(progress = null) {
@@ -151,7 +151,7 @@ async function render() {
         "div",
         { class: "empty", style: { margin: "64px 0" } },
         h("h3", { text: "这一步没走通" }),
-        h("p", { text: error.message || "请确认本地服务仍在运行。" }),
+        h("p", { text: error.message || "请刷新页面重试。" }),
         h("button", { class: "btn btn--ghost", style: { marginTop: "16px" }, onclick: () => render() }, "重试")
       )
     );

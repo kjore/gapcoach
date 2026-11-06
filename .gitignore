@@ -1,19 +1,5 @@
-.venv/
-__pycache__/
-*.py[cod]
-.pytest_cache/
-
-# Local configuration, credentials and generated state
-.env
-.env.*
-!.env.example
-data/
+# Local run artifacts (screenshots, logs, scratch data)
+/data/
 *.log
 
 .DS_Store
-
-# Local PowerContext config generated on this machine
-config/*.env
-
-# Generated Sites upload copy (source of truth: site/)
-site/dist/

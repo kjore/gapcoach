@@ -78,7 +78,7 @@ export default async function renderPractice(root, ctx) {
           h("div", { class: "cite__src", text: `${ev.source} · ${ev.section}` }),
           h("div", { class: "cite__title", text: ev.title }),
           h("div", { class: "cite__body", text: ev.content }),
-          h("div", { class: "cite__score", text: `seekdb 证据 · 检索 ${ev.score_parts?.retrieval ?? "—"} · 薄弱加权 ${ev.score_parts?.weakness ?? "—"} · 综合 ${ev.score.toFixed(2)}` })
+          h("div", { class: "cite__score", text: `原文证据 · 检索 ${ev.score_parts?.retrieval ?? "—"} · 薄弱加权 ${ev.score_parts?.weakness ?? "—"} · 综合 ${ev.score.toFixed(2)}` })
         )
       ),
 
@@ -86,7 +86,7 @@ export default async function renderPractice(root, ctx) {
         ? h(
             "div",
             { class: "memory-note" },
-            h("b", { text: "已写入 PowerContext" }),
+            h("b", { text: "已写入学习记忆" }),
             h("span", {
               text: result.memory_events
                 .map((e) => (e.type === "resolved" ? "薄弱点已解除" : e.type === "weakness" ? "记录薄弱点" : "记录进步"))
@@ -96,7 +96,7 @@ export default async function renderPractice(root, ctx) {
         : null,
 
       result.similar_mistakes?.length
-        ? h("p", { class: "hint", text: `seekdb 还找到 ${result.similar_mistakes.length} 条你之前答错的相似题，已一并纳入本次反馈。` })
+        ? h("p", { class: "hint", text: `还找到 ${result.similar_mistakes.length} 条你之前答错的相似题，已一并纳入本次反馈。` })
         : null
     );
   }

@@ -103,7 +103,7 @@ export default async function renderReport(root, ctx) {
         h(
           "p",
           { class: "note" },
-          "本次学习已经写入 PowerContext，下一次打开会自动恢复："
+          "本次学习已经写入记忆，下一次打开会自动恢复："
         ),
         ...memoryEvents.map((event) =>
           h(
@@ -119,7 +119,7 @@ export default async function renderReport(root, ctx) {
           )
         )
       )
-    : h("p", { class: "hint", text: "还没有可展示的记忆条目。完成诊断或练习后，这里会出现 PowerContext 的写入记录。" });
+    : h("p", { class: "hint", text: "还没有可展示的记忆条目。完成诊断或练习后，这里会出现学习记忆的写入记录。" });
 
   root.replaceChildren(
     h(
@@ -177,7 +177,7 @@ export default async function renderReport(root, ctx) {
       h(
         "section",
         { class: "section" },
-        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "这次留下的记忆" }), h("span", { class: "section__meta", text: "PowerContext" })),
+        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "这次留下的记忆" }), h("span", { class: "section__meta", text: "学习记忆" })),
         h("div", { style: { marginTop: "20px" } }, memoryBlock)
       )
     )

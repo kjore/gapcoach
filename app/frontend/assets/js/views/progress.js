@@ -69,7 +69,7 @@ export default async function renderProgress(root, ctx) {
           )
         )
       )
-    : h("p", { class: "hint", text: "还没有记忆条目。完成诊断或练习后，这里会出现 PowerContext 的写入记录。" });
+    : h("p", { class: "hint", text: "还没有记忆条目。完成诊断或练习后，这里会出现学习记忆的写入记录。" });
 
   const recent = data.attempts.recent || [];
   const recentTable = recent.length
@@ -113,14 +113,14 @@ export default async function renderProgress(root, ctx) {
       h(
         "section",
         { class: "section" },
-        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "五个模块" }), h("span", { class: "section__meta", text: "seekdb progress collection" })),
+        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "五个模块" }), h("span", { class: "section__meta", text: "本地进度表" })),
         h("div", {}, kpRows)
       ),
 
       h(
         "section",
         { class: "section" },
-        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "PowerContext 记忆" }), h("span", { class: "section__meta", text: `scope ${String(data.scope_id || "offline").slice(0, 18)}…` })),
+        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "学习记忆" }), h("span", { class: "section__meta", text: `scope ${String(data.scope_id || "offline").slice(0, 18)}…` })),
         h("div", { style: { marginTop: "24px" } }, timeline)
       ),
 
@@ -141,16 +141,16 @@ export default async function renderProgress(root, ctx) {
           h(
             "div",
             { class: "panel" },
-            h("div", { class: "cite__src", text: "seekdb embedded" }),
-            h("p", { class: "mono", style: { marginTop: "8px", lineHeight: "1.9" }, text: `path  ${data.seekdb.db_path}` }),
-            h("p", { class: "mono", style: { lineHeight: "1.9" }, text: `materials ${data.seekdb.materials} · questions ${data.seekdb.questions} · attempts ${data.seekdb.attempts} · progress ${data.seekdb.progress_rows}` })
+            h("div", { class: "cite__src", text: "检索与进度（浏览器内）" }),
+            h("p", { class: "mono", style: { marginTop: "8px", lineHeight: "1.9" }, text: `backend ${data.store.backend}` }),
+            h("p", { class: "mono", style: { lineHeight: "1.9" }, text: `materials ${data.store.materials} · questions ${data.store.questions} · attempts ${data.store.attempts} · progress ${data.store.progress_rows}` })
           ),
           h(
             "div",
             { class: "panel" },
-            h("div", { class: "cite__src", text: "PowerContext server" }),
-            h("p", { class: "mono", style: { marginTop: "8px", lineHeight: "1.9" }, text: `url     ${data.powercontext.url || "—"}` }),
-            h("p", { class: "mono", style: { lineHeight: "1.9" }, text: `db      ${data.powercontext.database || "offline"} · family atomic-memory` })
+            h("div", { class: "cite__src", text: "学习记忆（localStorage）" }),
+            h("p", { class: "mono", style: { marginTop: "8px", lineHeight: "1.9" }, text: `backend ${data.memory.backend || "—"} · online ${data.memory.online}` }),
+            h("p", { class: "mono", style: { lineHeight: "1.9" }, text: `family ${data.memory.family} · weakness / strength / plan / session` })
           )
         ),
         h(

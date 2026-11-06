@@ -60,7 +60,7 @@ export default async function renderTrace(root, ctx) {
               "div",
               { class: "trace__row" },
               h("div", { class: "trace__ts", text: (item.ts || "").slice(4, 19) }),
-              h("div", { class: `trace__kind${item.kind === "powercontext" ? " trace__kind--pc" : ""}`, text: `${item.kind}/${item.action}` }),
+              h("div", { class: `trace__kind${item.kind === "memory" ? " trace__kind--pc" : ""}`, text: `${item.kind}/${item.action}` }),
               h("div", { class: "trace__detail", text: JSON.stringify(item.detail) })
             )
           )
@@ -68,7 +68,7 @@ export default async function renderTrace(root, ctx) {
     );
   }
 
-  const filters = ["all", "seekdb", "powercontext", "gapcoach"];
+  const filters = ["all", "retrieval", "memory", "gapcoach"];
   const filterBar = h(
     "div",
     { style: { display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "16px" } },
@@ -103,13 +103,13 @@ export default async function renderTrace(root, ctx) {
       h(
         "p",
         { class: "lede" },
-        "这一页把 seekdb 的检索调用与 PowerContext 的记忆读写逐条摊开。评审可以直接输入任意问题，观察混合检索返回的证据与分数构成。"
+        "这一页把混合检索的每次调用与学习记忆的每次读写逐条摊开。评审可以直接输入任意问题，观察检索返回的证据与分数构成。"
       ),
 
       h(
         "section",
         { class: "section" },
-        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "检索证据台" }), h("span", { class: "section__meta", text: "seekdb hybrid search" })),
+        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "检索证据台" }), h("span", { class: "section__meta", text: "browser hybrid search" })),
         h(
           "div",
           { style: { marginTop: "20px", display: "flex", gap: "12px", flexWrap: "wrap" } },
@@ -123,10 +123,10 @@ export default async function renderTrace(root, ctx) {
       h(
         "section",
         { class: "section" },
-        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "最近 80 条调用" }), h("span", { class: "section__meta", text: "data/logs/trace.jsonl" })),
+        h("div", { class: "section__head" }, h("h2", { class: "section__title", text: "最近 80 条调用" }), h("span", { class: "section__meta", text: "会话内轨迹缓冲" })),
         filterBar,
         listBox,
-        h("details", { class: "raw" }, h("summary", { text: "查看原始健康检查与 OpenAPI" }), h("p", { class: "hint", style: { marginTop: "10px" } }, "GET /api/health · GET /openapi.json · GET /api/evidence?query=…")),
+        h("details", { class: "raw" }, h("summary", { text: "引擎如何工作" }), h("p", { class: "hint", style: { marginTop: "10px" } }, "全部逻辑在浏览器内运行：全文命中 + 特征哈希向量两路召回，RRF 融合后按薄弱度加权；学习记忆与答题记录写入 localStorage，刷新或下次打开都能恢复。")),
         h(
           "div",
           { style: { marginTop: "32px", display: "flex", gap: "16px", flexWrap: "wrap" } },
