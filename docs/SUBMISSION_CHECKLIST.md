@@ -27,7 +27,7 @@
 | --- | --- | --- | --- | --- |
 | 作品名称 + 赛道 | 知隙 GapCoach · StudyHack | `docs/SUBMISSION_POST.md` | 草稿完成 | |
 | 在线体验链接 | Qoder Sites 公开 URL | <https://gapcoach-2i2bg8e17m0.qoder.zone> | 已发布并公开 | 旧站 `gapcoach-2pf0jobp824` 在旧账号下，不再使用 |
-| 源码仓库 | 公开 GitHub 仓库 | 待创建并推送 | 未完成 | 本地仓库已就绪（main：`923c7a5` → `30aabc5`） |
+| 源码仓库 | 公开 GitHub 仓库 | <https://github.com/kjore/gapcoach> | 已推送并公开 | main 分支；API 校验 `private: false` |
 | Qoder 账号 | UID / 用户名 | — | 待用户填写 | UID `019e959e-97cb-717a-8eb0-66cab9d8499b`（沿用，需确认参赛账号一致） |
 | 开发过程截图 | Qoder 对话/开发截图 | `docs/dev-log/`（旧 5 张）+ 本轮新增 | 部分完成 | 建议补：引擎移植、浏览器验收对话截图 |
 | 运行效果截图 | 在线版真实界面截图 | `docs/screenshots/`（7 张） | 已完成 | 2026-11-06 Lexmount 云浏览器 1440×900 实跑截取 |

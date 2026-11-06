@@ -185,5 +185,5 @@
 
 - Qoder Sites 已在当前账号下新站发布：<https://gapcoach-2i2bg8e17m0.qoder.zone>（2026-11-06，访问策略 public，线上实测内容加载正常）。旧站 `gapcoach-2pf0jobp824.qoder.zone` 属旧账号，无法管理，不再引用。
 - 在线版真实运行截图已生成：`docs/screenshots/` 7 张（首页、诊断、报告、计划、练习反馈、进度、技术轨迹），2026-11-06 由 Lexmount 云浏览器在公开站点 1440×900 实跑截取；天池作品帖草稿见 `docs/SUBMISSION_POST.md`，发帖前需用户补充 Qoder 账号、仓库地址与团队信息。
-- 公开 GitHub 仓库尚未创建/推送。
+- 公开 GitHub 仓库已推送：<https://github.com/kjore/gapcoach>（main；2026-11-06；API 校验 `private: false`）。本机直连 github.com 不通，推送经本地代理 7897 一次性完成，未写入 git 配置。
 - 使用效果数据仍未收集，不虚构。
