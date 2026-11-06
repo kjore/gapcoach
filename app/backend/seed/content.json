@@ -1,0 +1,456 @@
+{
+  "course": {
+    "id": "db-intro",
+    "name": "数据库系统概论",
+    "subtitle": "期末冲刺 · 5 个高频知识模块",
+    "description": "面向计算机专业本科《数据库系统概论》期末复习。以事务、索引、SQL 优化、并发控制和分布式一致性五个高频考点为主线，用诊断测验定位薄弱点，再给出可执行的复习路径。",
+    "instructor": "GapCoach 示例课程",
+    "exam_date": "2026-11-15"
+  },
+  "knowledge_points": [
+    {
+      "id": "kp-transaction",
+      "name": "事务与 ACID",
+      "short": "事务",
+      "description": "事务的原子性、一致性、隔离性、持久性，以及提交、回滚和日志的作用。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-index",
+      "name": "索引与 B+ 树",
+      "short": "索引",
+      "description": "B+ 树结构、聚簇与非聚簇索引、联合索引的最左前缀与覆盖索引。",
+      "prerequisites": []
+    },
+    {
+      "id": "kp-sql",
+      "name": "SQL 查询与优化",
+      "short": "SQL",
+      "description": "连接与聚合的语义、执行计划阅读、索引失效场景和深分页优化。",
+      "prerequisites": ["kp-index"]
+    },
+    {
+      "id": "kp-concurrency",
+      "name": "并发控制与隔离级别",
+      "short": "并发",
+      "description": "脏读、不可重复读、幻读，两阶段锁、MVCC 与四种隔离级别的取舍。",
+      "prerequisites": ["kp-transaction"]
+    },
+    {
+      "id": "kp-distributed",
+      "name": "分布式一致性与复制",
+      "short": "分布式",
+      "description": "Raft 选举与日志复制、多数派提交、CAP 取舍和复制延迟。",
+      "prerequisites": ["kp-transaction"]
+    }
+  ],
+  "materials": [
+    {
+      "id": "mat-tx-01",
+      "kp_id": "kp-transaction",
+      "title": "ACID 四特性各自靠什么保证",
+      "source": "课程讲义",
+      "section": "第 6 章 6.1",
+      "kind": "concept",
+      "content": "原子性由 undo 日志保证：事务回滚时按日志逆序撤销未提交修改。持久性由 redo 日志与 WAL 保证：提交前先把日志刷盘，崩溃恢复时重放。隔离性由并发控制协议（锁或 MVCC）保证。一致性是目标而不是单一机制，既依赖数据库约束，也依赖应用把业务不变量写对。常见误区是把一致性也说成由日志单独保证。"
+    },
+    {
+      "id": "mat-tx-02",
+      "kp_id": "kp-transaction",
+      "title": "转账例子：原子性与一致性不是一回事",
+      "source": "课堂例题",
+      "section": "第 6 章 例题 6-3",
+      "kind": "example",
+      "content": "账户 A 向 B 转账 100 元，包含 A 扣款与 B 入账两个更新。若系统在两步之间崩溃，原子性要求两步都不生效，否则会出现钱凭空消失。一致性要求转账前后 A+B 总额不变。原子性可以通过回滚实现，但如果程序把扣款写成 100、入账写成 10，事务全部提交也无法保证一致性。考试中要区分：原子性管“做不做完”，一致性管“做完后业务规则是否成立”。"
+    },
+    {
+      "id": "mat-tx-03",
+      "kp_id": "kp-transaction",
+      "title": "提交、回滚与检查点",
+      "source": "实验手册",
+      "section": "实验 4",
+      "kind": "pitfall",
+      "content": "COMMIT 表示事务的修改成为持久状态，ROLLBACK 表示撤销未提交修改。注意：DDL 在很多数据库里会隐式提交当前事务；长事务会阻止 undo 回收并放大锁等待。检查点（checkpoint）把内存中的脏页刷盘并记录日志位置，缩短崩溃恢复时需要重放的日志范围，但它不等于提交，也不保证事务已经结束。"
+    },
+    {
+      "id": "mat-idx-01",
+      "kp_id": "kp-index",
+      "title": "B+ 树为什么适合数据库索引",
+      "source": "课程讲义",
+      "section": "第 7 章 7.2",
+      "kind": "concept",
+      "content": "B+ 树只有叶子节点存放数据或数据指针，内部节点只存键和子指针，因此扇出大、树高低，一次查询通常只需 3 到 4 次磁盘页访问。叶子节点按键有序并用链表相连，范围查询可以顺序扫描，不必回到根节点。相比 B 树，B+ 树把数据集中在叶子层，点查和范围查性能都更稳定。"
+    },
+    {
+      "id": "mat-idx-02",
+      "kp_id": "kp-index",
+      "title": "联合索引与最左前缀",
+      "source": "课堂例题",
+      "section": "第 7 章 例题 7-5",
+      "kind": "example",
+      "content": "联合索引 (a, b, c) 相当于先按 a 排序，a 相同再按 b，b 相同再按 c。查询条件包含 a、或 a+b、或 a+b+c 时可以用上索引；只给 b 或 c 无法定位连续区间。范围条件会截断后续列：WHERE a = 1 AND b > 2 AND c = 3 中，c 通常只能做索引条件下推而不能用于缩小扫描范围。设计索引时应把等值条件放前面、区分度高的列放前面。"
+    },
+    {
+      "id": "mat-idx-03",
+      "kp_id": "kp-index",
+      "title": "聚簇索引、回表与覆盖索引",
+      "source": "课程讲义",
+      "section": "第 7 章 7.3",
+      "kind": "concept",
+      "content": "InnoDB 的主键索引是聚簇索引，叶子节点直接存放整行数据；二级索引叶子节点存放主键值，查询非索引列时需要按主键再查一次，称为回表。如果查询需要的列都包含在二级索引中，就形成覆盖索引，可以避免回表。索引不是越多越好：每个索引都会增加写放大、占用空间，并让优化器在多索引之间做更复杂的代价选择。"
+    },
+    {
+      "id": "mat-sql-01",
+      "kp_id": "kp-sql",
+      "title": "读懂 EXPLAIN 的关键列",
+      "source": "实验手册",
+      "section": "实验 5",
+      "kind": "concept",
+      "content": "EXPLAIN 的 type 表示访问方式，常见从好到差包括 const、eq_ref、ref、range、index、ALL；ALL 代表全表扫描。key 是实际使用的索引，rows 是优化器估算的扫描行数，Extra 中的 Using index 表示覆盖索引，Using filesort 表示需要额外排序，Using temporary 表示使用了临时表。执行计划是估算值，统计信息过期时 rows 可能偏离实际。"
+    },
+    {
+      "id": "mat-sql-02",
+      "kp_id": "kp-sql",
+      "title": "索引失效的五个高频场景",
+      "source": "课堂例题",
+      "section": "第 8 章 例题 8-2",
+      "kind": "pitfall",
+      "content": "一是在索引列上做函数或表达式运算，例如 WHERE DATE(created_at) = '2026-10-01'；二是隐式类型转换，例如字符串列用数字比较；三是以通配符开头的 LIKE '%abc'；四是联合索引不满足最左前缀；五是 OR 连接了未建索引的列。改写思路是把函数移到常量侧，例如把日期范围改写成 >= 与 < 的区间。"
+    },
+    {
+      "id": "mat-sql-03",
+      "kp_id": "kp-sql",
+      "title": "深分页为什么慢，怎么改写",
+      "source": "工程笔记",
+      "section": "第 8 章 8.4",
+      "kind": "example",
+      "content": "LIMIT 100000, 20 需要先扫描并丢弃前 100000 行，偏移越大越慢。常见改写有两种：一是游标分页，记录上一页最后一条的排序键，下一页用 WHERE id > :last_id ORDER BY id LIMIT 20；二是延迟关联，先在覆盖索引上取出主键，再回表取整行。两者都避免了大偏移扫描，但游标分页要求排序键稳定且唯一。"
+    },
+    {
+      "id": "mat-cc-01",
+      "kp_id": "kp-concurrency",
+      "title": "三种读异常的准确定义",
+      "source": "课程讲义",
+      "section": "第 9 章 9.1",
+      "kind": "concept",
+      "content": "脏读：读到另一个事务未提交的修改。不可重复读：同一事务内两次读同一行，结果不同，通常因为别人提交了更新。幻读：同一事务内两次执行同一范围查询，返回的行数不同，通常因为别人插入或删除了满足条件的行。注意不可重复读针对同一行的值，幻读针对结果集的成员。"
+    },
+    {
+      "id": "mat-cc-02",
+      "kp_id": "kp-concurrency",
+      "title": "隔离级别与允许的异常",
+      "source": "课程讲义",
+      "section": "第 9 章 9.2",
+      "kind": "concept",
+      "content": "读未提交允许脏读；读已提交禁止脏读但允许不可重复读和幻读；可重复读禁止脏读与不可重复读，标准允许幻读；串行化禁止三者。MySQL InnoDB 的可重复读通过 MVCC 快照保证多次读一致，并用间隙锁在很大程度上避免幻读，但并非所有场景都等价于串行化。隔离级别越高，并发度通常越低。"
+    },
+    {
+      "id": "mat-cc-03",
+      "kp_id": "kp-concurrency",
+      "title": "两阶段锁与 MVCC 的分工",
+      "source": "课堂例题",
+      "section": "第 9 章 例题 9-4",
+      "kind": "example",
+      "content": "两阶段锁协议要求事务先进入加锁阶段，只能加锁不能释放；进入释放阶段后只能释放不能加锁。它能保证冲突可串行化，但可能死锁，需要死锁检测或超时回滚。MVCC 通过版本链和快照读让读操作不加锁，降低读写冲突；写操作仍然需要行锁。两者常配合使用：普通 SELECT 走快照读，SELECT ... FOR UPDATE 走当前读并加锁。"
+    },
+    {
+      "id": "mat-dt-01",
+      "kp_id": "kp-distributed",
+      "title": "Raft 的选举与日志复制",
+      "source": "课程讲义",
+      "section": "第 10 章 10.2",
+      "kind": "concept",
+      "content": "Raft 把节点分为领导者、跟随者和候选者。选举时候选者任期加一并向其他节点拉票，获得多数派投票才成为领导者。日志复制由领导者接收写请求，追加日志后并行发送给跟随者，超过半数节点确认后即可提交并返回客户端。多数派机制保证已提交日志至少存在于一个后续领导者上，从而不会丢失。"
+    },
+    {
+      "id": "mat-dt-02",
+      "kp_id": "kp-distributed",
+      "title": "CAP 与复制延迟的现实取舍",
+      "source": "工程笔记",
+      "section": "第 10 章 10.4",
+      "kind": "pitfall",
+      "content": "CAP 说的是网络分区发生时，系统只能在一致性（线性一致）与可用性之间取舍，并不是任何时候都要三选二。主从异步复制延迟低但可能读到旧数据；同步复制一致性强但写延迟高，且从库故障会阻塞写入。多数派复制在分区时少数派一侧不可写，这是 CP 的典型表现。工程上常用读己之写、版本号或有限重试来缓解延迟带来的不一致体验。"
+    },
+    {
+      "id": "mat-dt-03",
+      "kp_id": "kp-distributed",
+      "title": "两阶段提交的阻塞点",
+      "source": "课堂例题",
+      "section": "第 10 章 例题 10-3",
+      "kind": "example",
+      "content": "两阶段提交分为准备阶段和提交阶段。协调者在发出准备请求后崩溃，参与者已经锁定资源却不知道最终决定，只能阻塞等待协调者恢复。这是 2PC 的经典阻塞问题。三阶段提交通过增加预提交阶段和超时机制降低阻塞概率，但仍不能完全解决分区下的不确定性。工程上还会用日志持久化协调者状态、选主接管等方式提升可用性。"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q-tx-01",
+      "kp_id": "kp-transaction",
+      "difficulty": 1,
+      "stem": "事务的四个特性中，保证“要么全部完成，要么全部不生效”的是哪一项？",
+      "options": ["A. 原子性", "B. 一致性", "C. 隔离性", "D. 持久性"],
+      "answer": "A",
+      "explanation": "原子性关注事务的操作不可分割，失败时通过 undo 日志回滚全部未提交修改。一致性关注业务不变量，隔离性关注并发事务互不干扰，持久性关注提交结果不丢失。"
+    },
+    {
+      "id": "q-tx-02",
+      "kp_id": "kp-transaction",
+      "difficulty": 1,
+      "stem": "事务提交后系统突然断电，重启后数据仍然存在，主要体现了哪个特性？",
+      "options": ["A. 原子性", "B. 一致性", "C. 隔离性", "D. 持久性"],
+      "answer": "D",
+      "explanation": "持久性依赖 redo 日志与 WAL：提交前确保日志落盘，崩溃恢复时重放已提交事务。"
+    },
+    {
+      "id": "q-tx-03",
+      "kp_id": "kp-transaction",
+      "difficulty": 2,
+      "stem": "银行转账事务中，无论成功还是失败，两个账户余额之和都保持不变。这直接体现了哪个特性？",
+      "options": ["A. 原子性", "B. 一致性", "C. 隔离性", "D. 持久性"],
+      "answer": "B",
+      "explanation": "总额不变是业务不变量，属于一致性。原子性只保证两步同时生效或同时不生效，若程序把金额写错，事务完整提交仍可能破坏一致性。"
+    },
+    {
+      "id": "q-tx-04",
+      "kp_id": "kp-transaction",
+      "difficulty": 2,
+      "stem": "数据库主要通过什么机制实现事务之间的隔离性？",
+      "options": ["A. 建立更多索引", "B. 并发控制协议，如锁或 MVCC", "C. 对表进行分区", "D. 增加磁盘缓存"],
+      "answer": "B",
+      "explanation": "隔离性由并发控制协议保证。锁让冲突操作串行化，MVCC 通过版本快照让读写互不阻塞。索引、分区和缓存影响性能，但不负责事务隔离语义。"
+    },
+    {
+      "id": "q-tx-05",
+      "kp_id": "kp-transaction",
+      "difficulty": 1,
+      "stem": "事务执行 ROLLBACK 时，数据库对未提交的修改通常会做什么？",
+      "options": ["A. 保留修改但标记为不可见", "B. 依据 undo 日志撤销修改", "C. 立即重做修改", "D. 只回滚最后一条语句"],
+      "answer": "B",
+      "explanation": "回滚依赖 undo 日志按逆序撤销未提交修改。redo 日志用于崩溃恢复时重放已提交事务，两者职责不同。"
+    },
+    {
+      "id": "q-tx-06",
+      "kp_id": "kp-transaction",
+      "difficulty": 3,
+      "stem": "关于 ACID 的实现，下列说法错误的是？",
+      "options": ["A. 原子性通常由 undo 日志保证", "B. 一致性可以完全由数据库日志机制单独保证", "C. 隔离性可以由锁或 MVCC 实现", "D. 持久性通常依赖 WAL 与 redo 日志"],
+      "answer": "B",
+      "explanation": "一致性是事务执行后业务规则仍然成立，既需要数据库约束，也依赖应用逻辑正确。日志能保证原子性和持久性，但不能替应用发现业务规则写错。"
+    },
+    {
+      "id": "q-idx-01",
+      "kp_id": "kp-index",
+      "difficulty": 1,
+      "stem": "在 B+ 树索引中，实际的数据记录或数据指针存放在哪里？",
+      "options": ["A. 根节点", "B. 所有内部节点", "C. 叶子节点", "D. 哈希桶"],
+      "answer": "C",
+      "explanation": "B+ 树的内部节点只保存键和子指针，数据集中在叶子节点，叶子之间用链表连接以支持范围扫描。"
+    },
+    {
+      "id": "q-idx-02",
+      "kp_id": "kp-index",
+      "difficulty": 2,
+      "stem": "已有联合索引 (a, b, c)，下列哪个查询最可能无法有效使用该索引？",
+      "options": ["A. WHERE a = 1", "B. WHERE a = 1 AND b = 2", "C. WHERE b = 2 AND c = 3", "D. WHERE a = 1 AND b = 2 AND c = 3"],
+      "answer": "C",
+      "explanation": "联合索引遵循最左前缀原则。查询缺少最左列 a 时，无法在索引上定位连续区间，通常只能全索引扫描或全表扫描。"
+    },
+    {
+      "id": "q-idx-03",
+      "kp_id": "kp-index",
+      "difficulty": 1,
+      "stem": "查询 WHERE id BETWEEN 100 AND 200，下列哪种结构最适合？",
+      "options": ["A. 哈希索引", "B. B+ 树索引", "C. 位图索引", "D. 布隆过滤器"],
+      "answer": "B",
+      "explanation": "B+ 树叶子节点有序且相互连接，范围查询可以定位起点后顺序扫描。哈希索引只适合等值查询，不支持范围定位。"
+    },
+    {
+      "id": "q-idx-04",
+      "kp_id": "kp-index",
+      "difficulty": 2,
+      "stem": "InnoDB 中，聚簇索引与二级索引的核心区别是？",
+      "options": ["A. 聚簇索引只能建在字符串列上", "B. 聚簇索引叶子节点存放整行数据，二级索引叶子节点存放主键值", "C. 二级索引一定比聚簇索引高一层", "D. 聚簇索引不支持范围查询"],
+      "answer": "B",
+      "explanation": "InnoDB 主键索引即聚簇索引，叶子节点是整行数据。二级索引叶子节点保存索引列与主键值，查询其他列需要回表。"
+    },
+    {
+      "id": "q-idx-05",
+      "kp_id": "kp-index",
+      "difficulty": 1,
+      "stem": "为一张写多读少的表建立过多索引，最直接的代价是？",
+      "options": ["A. 查询结果可能重复", "B. 写入时需要维护更多索引，写放大和空间占用增加", "C. 事务无法提交", "D. 主键会失效"],
+      "answer": "B",
+      "explanation": "每次插入、更新、删除都要同步维护相关索引，索引越多写放大越明显，同时占用更多存储并增加优化器选择成本。"
+    },
+    {
+      "id": "q-idx-06",
+      "kp_id": "kp-index",
+      "difficulty": 2,
+      "stem": "什么是覆盖索引？",
+      "options": ["A. 索引覆盖了整张表的所有列", "B. 查询需要的列都包含在索引中，无需回表", "C. 用两个索引覆盖同一列", "D. 索引存储在内存中"],
+      "answer": "B",
+      "explanation": "当 SELECT 与 WHERE 需要的列都能从二级索引中取得时，查询无需回到聚簇索引取整行，执行计划常出现 Using index。"
+    },
+    {
+      "id": "q-sql-01",
+      "kp_id": "kp-sql",
+      "difficulty": 1,
+      "stem": "EXPLAIN 结果中 type 为 ALL 通常表示什么？",
+      "options": ["A. 使用了覆盖索引", "B. 全表扫描", "C. 常量等值查询", "D. 使用了临时表"],
+      "answer": "B",
+      "explanation": "type=ALL 表示全表扫描。常见较好的访问类型还有 const、eq_ref、ref、range。是否使用索引还要结合 key 与 rows 判断。"
+    },
+    {
+      "id": "q-sql-02",
+      "kp_id": "kp-sql",
+      "difficulty": 2,
+      "stem": "WHERE DATE(created_at) = '2026-10-01' 可能导致索引失效，合理的改写是？",
+      "options": ["A. 改为 WHERE created_at LIKE '%2026-10-01%'", "B. 改为 created_at >= '2026-10-01' AND created_at < '2026-10-02'", "C. 给 DATE 函数建立视图", "D. 改为 ORDER BY created_at"],
+      "answer": "B",
+      "explanation": "在索引列上使用函数会让数据库无法直接利用索引有序性。把函数运算移到常量侧，改写为半开区间，可以走 range 扫描。"
+    },
+    {
+      "id": "q-sql-03",
+      "kp_id": "kp-sql",
+      "difficulty": 2,
+      "stem": "关于 WHERE 与 HAVING，下列说法正确的是？",
+      "options": ["A. WHERE 在分组后过滤，HAVING 在分组前过滤", "B. WHERE 在分组前过滤行，HAVING 在分组后过滤组", "C. 两者完全等价，可以随意替换", "D. HAVING 只能配合 ORDER BY 使用"],
+      "answer": "B",
+      "explanation": "WHERE 作用于分组前的行，不能直接使用聚合函数；HAVING 作用于 GROUP BY 之后的分组结果，可以使用聚合函数。"
+    },
+    {
+      "id": "q-sql-04",
+      "kp_id": "kp-sql",
+      "difficulty": 2,
+      "stem": "LEFT JOIN 与 INNER JOIN 的主要区别是？",
+      "options": ["A. LEFT JOIN 保留左表所有行，右表无匹配时补 NULL", "B. INNER JOIN 保留左表所有行", "C. LEFT JOIN 不能带 ON 条件", "D. 两者只影响排序，不影响结果集"],
+      "answer": "A",
+      "explanation": "LEFT JOIN 以左表为保留侧，未匹配的右表列填 NULL；INNER JOIN 只保留两侧都匹配的行。把右表过滤条件写在 ON 与 WHERE 中，结果可能不同。"
+    },
+    {
+      "id": "q-sql-05",
+      "kp_id": "kp-sql",
+      "difficulty": 2,
+      "stem": "EXPLAIN 中的 rows 列含义是？",
+      "options": ["A. 结果集最终返回的行数", "B. 优化器估算需要扫描的行数", "C. 表中实际的物理行数", "D. 索引的层数"],
+      "answer": "B",
+      "explanation": "rows 是优化器基于统计信息估算的扫描行数，不是最终结果行数，也不一定等于实际扫描行数。统计信息过期时会明显偏离。"
+    },
+    {
+      "id": "q-sql-06",
+      "kp_id": "kp-sql",
+      "difficulty": 3,
+      "stem": "优化 LIMIT 100000, 20 这类深分页，下列哪种做法最合理？",
+      "options": ["A. 增大 buffer pool 即可", "B. 改为基于上一页最后一条记录的游标分页，或先取主键再回表", "C. 把 LIMIT 改成 TOP", "D. 给所有列建立索引"],
+      "answer": "B",
+      "explanation": "深分页的代价在于扫描并丢弃大量前置行。游标分页用排序键定位起点；延迟关联先在覆盖索引上取主键再回表。两者都能避免大偏移扫描。"
+    },
+    {
+      "id": "q-cc-01",
+      "kp_id": "kp-concurrency",
+      "difficulty": 1,
+      "stem": "一个事务读到了另一个事务尚未提交的修改，这种现象称为？",
+      "options": ["A. 脏读", "B. 不可重复读", "C. 幻读", "D. 丢失更新"],
+      "answer": "A",
+      "explanation": "脏读是读取未提交数据。若对方随后回滚，读到的值从未真实存在过。读已提交及以上隔离级别可以避免脏读。"
+    },
+    {
+      "id": "q-cc-02",
+      "kp_id": "kp-concurrency",
+      "difficulty": 2,
+      "stem": "同一事务内两次查询同一范围，第二次多出了别人新插入的行，这属于？",
+      "options": ["A. 脏读", "B. 不可重复读", "C. 幻读", "D. 死锁"],
+      "answer": "C",
+      "explanation": "幻读关注结果集成员变化，典型由其他事务插入或删除满足条件的行引起。不可重复读关注同一行的值被修改。"
+    },
+    {
+      "id": "q-cc-03",
+      "kp_id": "kp-concurrency",
+      "difficulty": 2,
+      "stem": "两阶段锁协议的两个阶段是？",
+      "options": ["A. 加锁阶段与释放阶段", "B. 读阶段与写阶段", "C. 准备阶段与提交阶段", "D. 解析阶段与执行阶段"],
+      "answer": "A",
+      "explanation": "两阶段锁要求先只加锁、后只释放，不能交替进行。该协议保证冲突可串行化，但可能产生死锁。"
+    },
+    {
+      "id": "q-cc-04",
+      "kp_id": "kp-concurrency",
+      "difficulty": 2,
+      "stem": "MVCC 最主要的收益是什么？",
+      "options": ["A. 让所有写操作无需加锁", "B. 让普通读操作不加锁也能读到一致快照，降低读写冲突", "C. 完全消除死锁", "D. 让事务不需要提交"],
+      "answer": "B",
+      "explanation": "MVCC 通过版本链与快照实现一致性读，普通 SELECT 通常不加锁。写操作仍需行锁，死锁也不能完全消除。"
+    },
+    {
+      "id": "q-cc-05",
+      "kp_id": "kp-concurrency",
+      "difficulty": 2,
+      "stem": "在标准 SQL 定义的隔离级别中，可重复读仍然允许出现哪种异常？",
+      "options": ["A. 脏读", "B. 不可重复读", "C. 幻读", "D. 以上都不允许"],
+      "answer": "C",
+      "explanation": "标准定义中可重复读禁止脏读与不可重复读，但允许幻读。MySQL InnoDB 在该级别下使用间隙锁，很多场景可以避免幻读，但这属于实现增强。"
+    },
+    {
+      "id": "q-cc-06",
+      "kp_id": "kp-concurrency",
+      "difficulty": 1,
+      "stem": "把隔离级别提高到串行化，最直接的代价通常是？",
+      "options": ["A. 数据更容易丢失", "B. 并发度下降、等待增加", "C. 索引全部失效", "D. 无法执行范围查询"],
+      "answer": "B",
+      "explanation": "串行化通过更强的锁或冲突检测保证结果等价于串行执行，事务之间等待增多，并发吞吐下降。"
+    },
+    {
+      "id": "q-dt-01",
+      "kp_id": "kp-distributed",
+      "difficulty": 2,
+      "stem": "Raft 中候选者要成为领导者，至少需要满足什么条件？",
+      "options": ["A. 获得任意一个节点投票", "B. 获得多数派节点投票", "C. 获得全部节点投票", "D. 由时钟最准的节点指定"],
+      "answer": "B",
+      "explanation": "Raft 使用多数派选举，避免分区两侧同时产生领导者。获得多数派投票即可成为领导者。"
+    },
+    {
+      "id": "q-dt-02",
+      "kp_id": "kp-distributed",
+      "difficulty": 2,
+      "stem": "Raft 中日志被领导者复制到多数派节点后再提交，这样做的主要目的是？",
+      "options": ["A. 提高磁盘利用率", "B. 保证已提交日志在后续领导者上仍然存在，不会丢失", "C. 减少网络连接数", "D. 让所有节点时钟同步"],
+      "answer": "B",
+      "explanation": "多数派提交与选举限制共同保证：新领导者一定包含所有已提交日志。这样已确认的写不会因主节点故障而丢失。"
+    },
+    {
+      "id": "q-dt-03",
+      "kp_id": "kp-distributed",
+      "difficulty": 2,
+      "stem": "根据 CAP，当网络分区真实发生时，系统通常需要？",
+      "options": ["A. 同时保证强一致性和全部可用性", "B. 在一致性与可用性之间做出取舍", "C. 放弃分区容错", "D. 只保证最终一致性即可，无需取舍"],
+      "answer": "B",
+      "explanation": "分区发生时，节点之间无法通信。若坚持线性一致，少数派一侧必须拒绝写；若坚持全部可用，就可能返回旧数据。这就是 C 与 A 的取舍。"
+    },
+    {
+      "id": "q-dt-04",
+      "kp_id": "kp-distributed",
+      "difficulty": 3,
+      "stem": "两阶段提交中，协调者在参与者完成准备后崩溃，最典型的问题是？",
+      "options": ["A. 参与者立即自动提交", "B. 参与者持有锁并阻塞，等待协调者恢复", "C. 日志被自动清空", "D. 主键冲突"],
+      "answer": "B",
+      "explanation": "参与者已进入准备状态并锁定资源，却不知道最终是提交还是回滚，只能阻塞等待协调者恢复。这是 2PC 的同步阻塞问题。"
+    },
+    {
+      "id": "q-dt-05",
+      "kp_id": "kp-distributed",
+      "difficulty": 1,
+      "stem": "主从异步复制中，刚写入主库的数据立刻在从库查询可能查不到，主要原因是？",
+      "options": ["A. 从库没有索引", "B. 复制存在延迟", "C. 事务没有提交", "D. 主库崩溃"],
+      "answer": "B",
+      "explanation": "异步复制先在主库提交再异步传送到从库，存在复制延迟。需要强一致读时应读主库，或用读己之写等会话一致性手段。"
+    },
+    {
+      "id": "q-dt-06",
+      "kp_id": "kp-distributed",
+      "difficulty": 1,
+      "stem": "Paxos 与 Raft 这类协议主要解决什么问题？",
+      "options": ["A. 数据库索引选择", "B. 分布式系统中的共识问题", "C. SQL 语法解析", "D. 磁盘空间回收"],
+      "answer": "B",
+      "explanation": "共识协议让一组可能故障的节点对同一个值或日志顺序达成一致，是复制状态机的核心。Raft 以更易理解的方式实现与 Paxos 等价的安全性目标。"
+    }
+  ]
+}

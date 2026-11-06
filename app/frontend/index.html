@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>知隙 GapCoach · 找到知识里的那道缝</title>
+    <meta
+      name="description"
+      content="知隙 GapCoach 是一个会记住你的学习教练：用诊断找到薄弱知识点，用 seekdb 混合检索给出证据，用 PowerContext 记住每一次进步。"
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f4efe4'/%3E%3Cpath d='M8 24C8 15 13 9 24 8' stroke='%231f5a4a' stroke-width='3' fill='none'/%3E%3Ccircle cx='8' cy='24' r='2.4' fill='%23cf6a3a'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/assets/styles.css?v=8" />
+  </head>
+  <body>
+    <a class="skip" href="#view">跳到主要内容</a>
+    <div class="shell">
+      <aside class="rail" aria-label="主导航">
+        <div class="brand">
+          <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M7 33C7 19 15 9 33 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
+            <circle cx="7" cy="33" r="3.4" fill="#cf6a3a" />
+            <circle cx="33" cy="7" r="2.4" fill="currentColor" />
+          </svg>
+          <div>
+            <div class="brand__name">知隙</div>
+            <div class="brand__latin">GapCoach</div>
+          </div>
+        </div>
+
+        <nav class="nav" id="nav">
+          <button class="nav__item" data-route="plan">
+            <span class="nav__no">01</span><span>今日计划</span>
+          </button>
+          <button class="nav__item" data-route="diagnostic">
+            <span class="nav__no">02</span><span>诊断</span>
+          </button>
+          <button class="nav__item" data-route="progress">
+            <span class="nav__no">03</span><span>学习进度</span>
+          </button>
+          <button class="nav__item nav__item--quiet" data-route="trace">
+            <span class="nav__no">04</span><span>技术轨迹</span>
+          </button>
+        </nav>
+
+        <div class="rail__foot">
+          <div class="learner" id="rail-learner" hidden>
+            <div class="learner__avatar" id="rail-avatar">知</div>
+            <div class="learner__meta">
+              <div class="learner__name" id="rail-name">同学</div>
+              <div class="learner__sub" id="rail-sub">掌握度加载中</div>
+            </div>
+          </div>
+          <div class="techline" id="techline" aria-live="polite">
+            <span class="dot" data-svc="seekdb"></span><span class="techline__label">seekdb</span>
+            <span class="dot" data-svc="powercontext"></span><span class="techline__label">PowerContext</span>
+          </div>
+          <p class="rail__note">诊断不是考试。<br />它只是把缝找出来。</p>
+        </div>
+      </aside>
+
+      <main id="view" class="view" tabindex="-1"></main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    <script type="module" src="/assets/js/app.js"></script>
+  </body>
+</html>

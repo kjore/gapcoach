@@ -1,0 +1,199 @@
+{
+  "project": "知隙 GapCoach",
+  "verified_at": "2026-10-27T00:36:41",
+  "result": "PASS",
+  "checks_total": 20,
+  "checks_passed": 20,
+  "learner_name": "verification-1027-003639",
+  "seekdb": {
+    "course_id": "db-intro",
+    "knowledge_points": 5,
+    "materials": 15,
+    "questions": 30,
+    "db_path": "data/seekdb (local, gitignored)"
+  },
+  "powercontext": {
+    "online": true,
+    "database": "ready",
+    "memory_family": true
+  },
+  "diagnostic": {
+    "summary": "完成诊断：10 题，正确 6 题。当前最薄弱：「并发控制与隔离级别」。",
+    "weak_points": [
+      {
+        "kp_id": "kp-concurrency",
+        "mastery": 26,
+        "answered": 2,
+        "correct": 0,
+        "streak": 0,
+        "last_correct": false,
+        "updated_at": ""
+      },
+      {
+        "kp_id": "kp-distributed",
+        "mastery": 26,
+        "answered": 2,
+        "correct": 0,
+        "streak": 0,
+        "last_correct": false,
+        "updated_at": ""
+      }
+    ],
+    "memory_event_types": [
+      [
+        "strength",
+        "kp-index"
+      ],
+      [
+        "strength",
+        "kp-sql"
+      ],
+      [
+        "strength",
+        "kp-transaction"
+      ],
+      [
+        "weakness",
+        "kp-concurrency"
+      ],
+      [
+        "weakness",
+        "kp-distributed"
+      ]
+    ]
+  },
+  "practice": {
+    "question_id": "q-cc-01",
+    "correct": false,
+    "delta": -15,
+    "mastery": [
+      26,
+      11
+    ],
+    "evidence_ids": [
+      "mat-cc-01",
+      "mat-cc-02"
+    ]
+  },
+  "progress": {
+    "attempts": 11,
+    "scope_id": "scp_4hjj97p2bqy5bm7pr41bynjtzm",
+    "memory_kinds": [
+      "plan:current",
+      "session:summary",
+      "strength:kp-transaction",
+      "strength:kp-index",
+      "strength:kp-sql",
+      "weakness:kp-distributed",
+      "weakness:kp-concurrency",
+      "weakness:kp-concurrency"
+    ],
+    "seekdb": {
+      "course_id": "db-intro",
+      "knowledge_points": 5,
+      "materials": 15,
+      "questions": 30,
+      "attempts": 36,
+      "progress_rows": 16,
+      "db_path": "data/seekdb (local)"
+    }
+  },
+  "resume": {
+    "has_history": true,
+    "last_plan": "10-27 00:36 生成复习计划：优先「并发控制与隔离级别」(26)、「分布式一致性与复制」(26)、「事务与 ACID」(79)，共 3 组任务 / 约 36 分钟。",
+    "last_plan_at": null,
+    "message": "欢迎回来。上次留下 2 个薄弱知识点，计划已从 PowerContext 恢复。"
+  },
+  "trace": [
+    "gapcoach/diagnostic_generated",
+    "powercontext/remember",
+    "powercontext/scope_ready",
+    "powercontext/search",
+    "seekdb/ready",
+    "seekdb/record_attempt",
+    "seekdb/save_mastery",
+    "seekdb/search_materials"
+  ],
+  "checks": [
+    {
+      "name": "seekdb 已加载课程材料与题库",
+      "ok": true
+    },
+    {
+      "name": "PowerContext 在线",
+      "ok": true
+    },
+    {
+      "name": "为验收用户创建独立 Scope",
+      "ok": true
+    },
+    {
+      "name": "新用户从零开始",
+      "ok": true
+    },
+    {
+      "name": "诊断覆盖 5 个知识点、共 10 题",
+      "ok": true
+    },
+    {
+      "name": "诊断识别出预期的 2 个薄弱点",
+      "ok": true
+    },
+    {
+      "name": "PowerContext 写入薄弱点与优势记忆",
+      "ok": true
+    },
+    {
+      "name": "每条记忆都有可追溯 artifact",
+      "ok": true
+    },
+    {
+      "name": "计划优先安排最薄弱知识点",
+      "ok": true
+    },
+    {
+      "name": "计划由 seekdb 检索证据 + 练习题组成",
+      "ok": true
+    },
+    {
+      "name": "检索结果公开分数构成",
+      "ok": true
+    },
+    {
+      "name": "答错后判分与掌握度下降",
+      "ok": true
+    },
+    {
+      "name": "答题反馈带 seekdb 原文证据",
+      "ok": true
+    },
+    {
+      "name": "进度页读取同一 Scope",
+      "ok": true
+    },
+    {
+      "name": "答题记录与执行都落到 seekdb",
+      "ok": true
+    },
+    {
+      "name": "记忆时间线包含薄弱点与计划快照",
+      "ok": true
+    },
+    {
+      "name": "重新进入会话时从 PowerContext 恢复",
+      "ok": true
+    },
+    {
+      "name": "调用轨迹同时包含 seekdb 与 PowerContext",
+      "ok": true
+    },
+    {
+      "name": "轨迹包含混合检索与记忆写入",
+      "ok": true
+    },
+    {
+      "name": "全局答题记录单调增加",
+      "ok": true
+    }
+  ]
+}

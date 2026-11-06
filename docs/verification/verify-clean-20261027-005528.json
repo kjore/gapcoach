@@ -1,0 +1,675 @@
+{
+  "learner_name": "verification-1027-005527",
+  "base_url": "http://127.0.0.1:8000 (clean-room ports 8100/18081)",
+  "health": {
+    "status": "ok",
+    "name": "知隙 GapCoach",
+    "seekdb": {
+      "course_id": "db-intro",
+      "knowledge_points": 5,
+      "materials": 15,
+      "questions": 30,
+      "attempts": 0,
+      "progress_rows": 0,
+      "db_path": "data/seekdb (clean-room test)"
+    },
+    "powercontext": {
+      "online": true,
+      "url": "http://127.0.0.1:18081",
+      "database": "ready",
+      "memory_family": true
+    },
+    "trace_size": 1
+  },
+  "session": {
+    "learner_id": "verification-1027-005527-50f81127",
+    "scope_id": "scp_1nmxps08nnshy1hyvck2bq7ypt",
+    "answered": 0,
+    "weak_points": []
+  },
+  "diagnostic": {
+    "summary": "完成诊断：10 题，正确 6 题。当前最薄弱：「并发控制与隔离级别」。",
+    "weak_points": [
+      {
+        "kp_id": "kp-concurrency",
+        "mastery": 26,
+        "answered": 2,
+        "correct": 0,
+        "streak": 0,
+        "last_correct": false,
+        "updated_at": ""
+      },
+      {
+        "kp_id": "kp-distributed",
+        "mastery": 26,
+        "answered": 2,
+        "correct": 0,
+        "streak": 0,
+        "last_correct": false,
+        "updated_at": ""
+      }
+    ],
+    "memory_events": [
+      {
+        "type": "strength",
+        "kp_id": "kp-transaction",
+        "artifact": {
+          "family": "atomic-memory",
+          "artifact_id": "art_f6de265f43354d5eaf3a34ef77e3b1e4",
+          "revision": 1
+        }
+      },
+      {
+        "type": "strength",
+        "kp_id": "kp-index",
+        "artifact": {
+          "family": "atomic-memory",
+          "artifact_id": "art_210f4f828ce2444fbdf7d17007781a26",
+          "revision": 1
+        }
+      },
+      {
+        "type": "strength",
+        "kp_id": "kp-sql",
+        "artifact": {
+          "family": "atomic-memory",
+          "artifact_id": "art_e933b7f9647b48069b428ca10a95417c",
+          "revision": 1
+        }
+      },
+      {
+        "type": "weakness",
+        "kp_id": "kp-concurrency",
+        "artifact": {
+          "family": "atomic-memory",
+          "artifact_id": "art_0946b74a021f48899155988a4577bfce",
+          "revision": 1
+        }
+      },
+      {
+        "type": "weakness",
+        "kp_id": "kp-distributed",
+        "artifact": {
+          "family": "atomic-memory",
+          "artifact_id": "art_8bdd0a7fafc74138b4648d7fbfd686aa",
+          "revision": 1
+        }
+      }
+    ],
+    "mastery": {
+      "kp-transaction": {
+        "kp_id": "kp-transaction",
+        "mastery": 79,
+        "answered": 2,
+        "correct": 2,
+        "streak": 2,
+        "last_correct": true,
+        "updated_at": ""
+      },
+      "kp-index": {
+        "kp_id": "kp-index",
+        "mastery": 79,
+        "answered": 2,
+        "correct": 2,
+        "streak": 2,
+        "last_correct": true,
+        "updated_at": ""
+      },
+      "kp-sql": {
+        "kp_id": "kp-sql",
+        "mastery": 79,
+        "answered": 2,
+        "correct": 2,
+        "streak": 2,
+        "last_correct": true,
+        "updated_at": ""
+      },
+      "kp-concurrency": {
+        "kp_id": "kp-concurrency",
+        "mastery": 26,
+        "answered": 2,
+        "correct": 0,
+        "streak": 0,
+        "last_correct": false,
+        "updated_at": ""
+      },
+      "kp-distributed": {
+        "kp_id": "kp-distributed",
+        "mastery": 26,
+        "answered": 2,
+        "correct": 0,
+        "streak": 0,
+        "last_correct": false,
+        "updated_at": ""
+      }
+    }
+  },
+  "plan": {
+    "generated_at": "2026-10-27T00:55:28+0800",
+    "learner_id": "verification-1027-005527-50f81127",
+    "course_id": "db-intro",
+    "total_minutes": 36,
+    "items": [
+      {
+        "kp_id": "kp-concurrency",
+        "kp_name": "并发控制与隔离级别",
+        "mastery": 26,
+        "reason": "掌握度 26，低于 60；最近答错 2 题",
+        "materials": [
+          {
+            "id": "mat-cc-02",
+            "kp_id": "kp-concurrency",
+            "title": "隔离级别与允许的异常",
+            "content": "读未提交允许脏读；读已提交禁止脏读但允许不可重复读和幻读；可重复读禁止脏读与不可重复读，标准允许幻读；串行化禁止三者。MySQL InnoDB 的可重复读通过 MVCC 快照保证多次读一致，并用间隙锁在很大程度上避免幻读，但并非所有场景都等价于串行化。隔离级别越高，并发度通常越低。",
+            "source": "课程讲义",
+            "section": "第 9 章 9.2",
+            "kind": "concept",
+            "score": 0.9272,
+            "score_parts": {
+              "retrieval": 1.0,
+              "weakness": 0.74
+            }
+          },
+          {
+            "id": "mat-cc-03",
+            "kp_id": "kp-concurrency",
+            "title": "两阶段锁与 MVCC 的分工",
+            "content": "两阶段锁协议要求事务先进入加锁阶段，只能加锁不能释放；进入释放阶段后只能释放不能加锁。它能保证冲突可串行化，但可能死锁，需要死锁检测或超时回滚。MVCC 通过版本链和快照读让读操作不加锁，降低读写冲突；写操作仍然需要行锁。两者常配合使用：普通 SELECT 走快照读，SELECT ... FOR UPDATE 走当前读并加锁。",
+            "source": "课堂例题",
+            "section": "第 9 章 例题 9-4",
+            "kind": "example",
+            "score": 0.5672,
+            "score_parts": {
+              "retrieval": 0.5,
+              "weakness": 0.74
+            }
+          }
+        ],
+        "questions": [
+          {
+            "id": "q-cc-01",
+            "kp_id": "kp-concurrency",
+            "kp_name": "并发控制与隔离级别",
+            "difficulty": 1,
+            "stem": "一个事务读到了另一个事务尚未提交的修改，这种现象称为？",
+            "options": [
+              "A. 脏读",
+              "B. 不可重复读",
+              "C. 幻读",
+              "D. 丢失更新"
+            ],
+            "recommended": true
+          },
+          {
+            "id": "q-cc-06",
+            "kp_id": "kp-concurrency",
+            "kp_name": "并发控制与隔离级别",
+            "difficulty": 1,
+            "stem": "把隔离级别提高到串行化，最直接的代价通常是？",
+            "options": [
+              "A. 数据更容易丢失",
+              "B. 并发度下降、等待增加",
+              "C. 索引全部失效",
+              "D. 无法执行范围查询"
+            ],
+            "recommended": true
+          }
+        ],
+        "minutes": 12
+      },
+      {
+        "kp_id": "kp-distributed",
+        "kp_name": "分布式一致性与复制",
+        "mastery": 26,
+        "reason": "掌握度 26，低于 60；最近答错 2 题",
+        "materials": [
+          {
+            "id": "mat-dt-02",
+            "kp_id": "kp-distributed",
+            "title": "CAP 与复制延迟的现实取舍",
+            "content": "CAP 说的是网络分区发生时，系统只能在一致性（线性一致）与可用性之间取舍，并不是任何时候都要三选二。主从异步复制延迟低但可能读到旧数据；同步复制一致性强但写延迟高，且从库故障会阻塞写入。多数派复制在分区时少数派一侧不可写，这是 CP 的典型表现。工程上常用读己之写、版本号或有限重试来缓解延迟带来的不一致体验。",
+            "source": "工程笔记",
+            "section": "第 10 章 10.4",
+            "kind": "pitfall",
+            "score": 0.9272,
+            "score_parts": {
+              "retrieval": 1.0,
+              "weakness": 0.74
+            }
+          },
+          {
+            "id": "mat-dt-01",
+            "kp_id": "kp-distributed",
+            "title": "Raft 的选举与日志复制",
+            "content": "Raft 把节点分为领导者、跟随者和候选者。选举时候选者任期加一并向其他节点拉票，获得多数派投票才成为领导者。日志复制由领导者接收写请求，追加日志后并行发送给跟随者，超过半数节点确认后即可提交并返回客户端。多数派机制保证已提交日志至少存在于一个后续领导者上，从而不会丢失。",
+            "source": "课程讲义",
+            "section": "第 10 章 10.2",
+            "kind": "concept",
+            "score": 0.5672,
+            "score_parts": {
+              "retrieval": 0.5,
+              "weakness": 0.74
+            }
+          }
+        ],
+        "questions": [
+          {
+            "id": "q-dt-05",
+            "kp_id": "kp-distributed",
+            "kp_name": "分布式一致性与复制",
+            "difficulty": 1,
+            "stem": "主从异步复制中，刚写入主库的数据立刻在从库查询可能查不到，主要原因是？",
+            "options": [
+              "A. 从库没有索引",
+              "B. 复制存在延迟",
+              "C. 事务没有提交",
+              "D. 主库崩溃"
+            ],
+            "recommended": true
+          },
+          {
+            "id": "q-dt-06",
+            "kp_id": "kp-distributed",
+            "kp_name": "分布式一致性与复制",
+            "difficulty": 1,
+            "stem": "Paxos 与 Raft 这类协议主要解决什么问题？",
+            "options": [
+              "A. 数据库索引选择",
+              "B. 分布式系统中的共识问题",
+              "C. SQL 语法解析",
+              "D. 磁盘空间回收"
+            ],
+            "recommended": true
+          }
+        ],
+        "minutes": 12
+      },
+      {
+        "kp_id": "kp-transaction",
+        "kp_name": "事务与 ACID",
+        "mastery": 79,
+        "reason": "保持手感，挑战更高难度",
+        "materials": [
+          {
+            "id": "mat-tx-01",
+            "kp_id": "kp-transaction",
+            "title": "ACID 四特性各自靠什么保证",
+            "content": "原子性由 undo 日志保证：事务回滚时按日志逆序撤销未提交修改。持久性由 redo 日志与 WAL 保证：提交前先把日志刷盘，崩溃恢复时重放。隔离性由并发控制协议（锁或 MVCC）保证。一致性是目标而不是单一机制，既依赖数据库约束，也依赖应用把业务不变量写对。常见误区是把一致性也说成由日志单独保证。",
+            "source": "课程讲义",
+            "section": "第 6 章 6.1",
+            "kind": "concept",
+            "score": 0.7787999999999999,
+            "score_parts": {
+              "retrieval": 1.0,
+              "weakness": 0.21
+            }
+          },
+          {
+            "id": "mat-tx-03",
+            "kp_id": "kp-transaction",
+            "title": "提交、回滚与检查点",
+            "content": "COMMIT 表示事务的修改成为持久状态，ROLLBACK 表示撤销未提交修改。注意：DDL 在很多数据库里会隐式提交当前事务；长事务会阻止 undo 回收并放大锁等待。检查点（checkpoint）把内存中的脏页刷盘并记录日志位置，缩短崩溃恢复时需要重放的日志范围，但它不等于提交，也不保证事务已经结束。",
+            "source": "实验手册",
+            "section": "实验 4",
+            "kind": "pitfall",
+            "score": 0.4188,
+            "score_parts": {
+              "retrieval": 0.5,
+              "weakness": 0.21
+            }
+          }
+        ],
+        "questions": [
+          {
+            "id": "q-tx-06",
+            "kp_id": "kp-transaction",
+            "kp_name": "事务与 ACID",
+            "difficulty": 3,
+            "stem": "关于 ACID 的实现，下列说法错误的是？",
+            "options": [
+              "A. 原子性通常由 undo 日志保证",
+              "B. 一致性可以完全由数据库日志机制单独保证",
+              "C. 隔离性可以由锁或 MVCC 实现",
+              "D. 持久性通常依赖 WAL 与 redo 日志"
+            ],
+            "recommended": true
+          },
+          {
+            "id": "q-tx-04",
+            "kp_id": "kp-transaction",
+            "kp_name": "事务与 ACID",
+            "difficulty": 2,
+            "stem": "数据库主要通过什么机制实现事务之间的隔离性？",
+            "options": [
+              "A. 建立更多索引",
+              "B. 并发控制协议，如锁或 MVCC",
+              "C. 对表进行分区",
+              "D. 增加磁盘缓存"
+            ],
+            "recommended": true
+          }
+        ],
+        "minutes": 12
+      }
+    ],
+    "note": "计划由 seekdb 混合检索 + PowerContext 记忆生成，答题后会动态更新。"
+  },
+  "practice": {
+    "question_id": "q-cc-01",
+    "correct": false,
+    "delta": -15,
+    "mastery": [
+      26,
+      11
+    ],
+    "evidence_ids": [
+      "mat-cc-01",
+      "mat-cc-02"
+    ]
+  },
+  "progress": {
+    "attempts": 11,
+    "scope_id": "scp_1nmxps08nnshy1hyvck2bq7ypt",
+    "memory_kinds": [
+      "plan:current",
+      "session:summary",
+      "strength:kp-transaction",
+      "strength:kp-index",
+      "strength:kp-sql",
+      "weakness:kp-distributed",
+      "weakness:kp-concurrency",
+      "weakness:kp-concurrency"
+    ],
+    "seekdb": {
+      "course_id": "db-intro",
+      "knowledge_points": 5,
+      "materials": 15,
+      "questions": 30,
+      "attempts": 11,
+      "progress_rows": 5,
+      "db_path": "data/seekdb (clean-room test)"
+    }
+  },
+  "resume": {
+    "has_history": true,
+    "last_plan": "10-27 00:55 生成复习计划：优先「并发控制与隔离级别」(26)、「分布式一致性与复制」(26)、「事务与 ACID」(79)，共 3 组任务 / 约 36 分钟。",
+    "last_plan_at": null,
+    "message": "欢迎回来。上次留下 2 个薄弱知识点，计划已从 PowerContext 恢复。"
+  },
+  "trace": [
+    "gapcoach/diagnostic_generated",
+    "powercontext/remember",
+    "powercontext/scope_ready",
+    "powercontext/search",
+    "seekdb/ready",
+    "seekdb/record_attempt",
+    "seekdb/save_mastery",
+    "seekdb/search_materials"
+  ],
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "seekdb 已加载课程材料与题库",
+      "ok": true,
+      "detail": {
+        "course_id": "db-intro",
+        "knowledge_points": 5,
+        "materials": 15,
+        "questions": 30,
+        "attempts": 0,
+        "progress_rows": 0,
+        "db_path": "data/seekdb (clean-room test)"
+      }
+    },
+    {
+      "name": "PowerContext 在线",
+      "ok": true,
+      "detail": {
+        "online": true,
+        "url": "http://127.0.0.1:18081",
+        "database": "ready",
+        "memory_family": true
+      }
+    },
+    {
+      "name": "为验收用户创建独立 Scope",
+      "ok": true,
+      "detail": "scp_1nmxps08nnshy1hyvck2bq7ypt"
+    },
+    {
+      "name": "新用户从零开始",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "诊断覆盖 5 个知识点、共 10 题",
+      "ok": true,
+      "detail": {
+        "count": 10,
+        "covered": [
+          "kp-concurrency",
+          "kp-distributed",
+          "kp-index",
+          "kp-sql",
+          "kp-transaction"
+        ]
+      }
+    },
+    {
+      "name": "诊断识别出预期的 2 个薄弱点",
+      "ok": true,
+      "detail": [
+        {
+          "kp_id": "kp-concurrency",
+          "mastery": 26,
+          "answered": 2,
+          "correct": 0,
+          "streak": 0,
+          "last_correct": false,
+          "updated_at": ""
+        },
+        {
+          "kp_id": "kp-distributed",
+          "mastery": 26,
+          "answered": 2,
+          "correct": 0,
+          "streak": 0,
+          "last_correct": false,
+          "updated_at": ""
+        }
+      ]
+    },
+    {
+      "name": "PowerContext 写入薄弱点与优势记忆",
+      "ok": true,
+      "detail": [
+        [
+          "strength",
+          "kp-index"
+        ],
+        [
+          "strength",
+          "kp-sql"
+        ],
+        [
+          "strength",
+          "kp-transaction"
+        ],
+        [
+          "weakness",
+          "kp-concurrency"
+        ],
+        [
+          "weakness",
+          "kp-distributed"
+        ]
+      ]
+    },
+    {
+      "name": "每条记忆都有可追溯 artifact",
+      "ok": true,
+      "detail": [
+        {
+          "type": "strength",
+          "kp_id": "kp-transaction",
+          "artifact": {
+            "family": "atomic-memory",
+            "artifact_id": "art_f6de265f43354d5eaf3a34ef77e3b1e4",
+            "revision": 1
+          }
+        },
+        {
+          "type": "strength",
+          "kp_id": "kp-index",
+          "artifact": {
+            "family": "atomic-memory",
+            "artifact_id": "art_210f4f828ce2444fbdf7d17007781a26",
+            "revision": 1
+          }
+        },
+        {
+          "type": "strength",
+          "kp_id": "kp-sql",
+          "artifact": {
+            "family": "atomic-memory",
+            "artifact_id": "art_e933b7f9647b48069b428ca10a95417c",
+            "revision": 1
+          }
+        },
+        {
+          "type": "weakness",
+          "kp_id": "kp-concurrency",
+          "artifact": {
+            "family": "atomic-memory",
+            "artifact_id": "art_0946b74a021f48899155988a4577bfce",
+            "revision": 1
+          }
+        },
+        {
+          "type": "weakness",
+          "kp_id": "kp-distributed",
+          "artifact": {
+            "family": "atomic-memory",
+            "artifact_id": "art_8bdd0a7fafc74138b4648d7fbfd686aa",
+            "revision": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "计划优先安排最薄弱知识点",
+      "ok": true,
+      "detail": "kp-concurrency"
+    },
+    {
+      "name": "计划由 seekdb 检索证据 + 练习题组成",
+      "ok": true,
+      "detail": {
+        "materials": 2,
+        "questions": 2
+      }
+    },
+    {
+      "name": "检索结果公开分数构成",
+      "ok": true,
+      "detail": {
+        "id": "mat-cc-02",
+        "kp_id": "kp-concurrency",
+        "title": "隔离级别与允许的异常",
+        "content": "读未提交允许脏读；读已提交禁止脏读但允许不可重复读和幻读；可重复读禁止脏读与不可重复读，标准允许幻读；串行化禁止三者。MySQL InnoDB 的可重复读通过 MVCC 快照保证多次读一致，并用间隙锁在很大程度上避免幻读，但并非所有场景都等价于串行化。隔离级别越高，并发度通常越低。",
+        "source": "课程讲义",
+        "section": "第 9 章 9.2",
+        "kind": "concept",
+        "score": 0.9272,
+        "score_parts": {
+          "retrieval": 1.0,
+          "weakness": 0.74
+        }
+      }
+    },
+    {
+      "name": "答错后判分与掌握度下降",
+      "ok": true,
+      "detail": -15
+    },
+    {
+      "name": "答题反馈带 seekdb 原文证据",
+      "ok": true,
+      "detail": [
+        "mat-cc-01",
+        "mat-cc-02"
+      ]
+    },
+    {
+      "name": "进度页读取同一 Scope",
+      "ok": true,
+      "detail": "scp_1nmxps08nnshy1hyvck2bq7ypt"
+    },
+    {
+      "name": "答题记录与执行都落到 seekdb",
+      "ok": true,
+      "detail": {
+        "learner_attempts": 11,
+        "global": 11
+      }
+    },
+    {
+      "name": "记忆时间线包含薄弱点与计划快照",
+      "ok": true,
+      "detail": [
+        "plan:current",
+        "session:summary",
+        "strength:kp-transaction",
+        "strength:kp-index",
+        "strength:kp-sql",
+        "weakness:kp-distributed",
+        "weakness:kp-concurrency",
+        "weakness:kp-concurrency"
+      ]
+    },
+    {
+      "name": "重新进入会话时从 PowerContext 恢复",
+      "ok": true,
+      "detail": {
+        "has_history": true,
+        "last_plan": "10-27 00:55 生成复习计划：优先「并发控制与隔离级别」(26)、「分布式一致性与复制」(26)、「事务与 ACID」(79)，共 3 组任务 / 约 36 分钟。",
+        "last_plan_at": null,
+        "message": "欢迎回来。上次留下 2 个薄弱知识点，计划已从 PowerContext 恢复。"
+      }
+    },
+    {
+      "name": "调用轨迹同时包含 seekdb 与 PowerContext",
+      "ok": true,
+      "detail": [
+        "gapcoach/diagnostic_generated",
+        "powercontext/remember",
+        "powercontext/scope_ready",
+        "powercontext/search",
+        "seekdb/ready",
+        "seekdb/record_attempt",
+        "seekdb/save_mastery",
+        "seekdb/search_materials"
+      ]
+    },
+    {
+      "name": "轨迹包含混合检索与记忆写入",
+      "ok": true,
+      "detail": [
+        "gapcoach/diagnostic_generated",
+        "powercontext/remember",
+        "powercontext/scope_ready",
+        "powercontext/search",
+        "seekdb/ready",
+        "seekdb/record_attempt",
+        "seekdb/save_mastery",
+        "seekdb/search_materials"
+      ]
+    },
+    {
+      "name": "全局答题记录单调增加",
+      "ok": true,
+      "detail": 11
+    }
+  ],
+  "finished_at": "2026-10-27T00:55:28"
+}
