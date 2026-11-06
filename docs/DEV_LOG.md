@@ -131,3 +131,59 @@
 - `.env`、`data/`、`.venv/`、日志与本地截图运行时目录不提交。
 - 配置示例只含占位值；不包含真实 token、密码或个人信息。
 - 站点与文档中的姓名（如“回归同学”）为验收时输入的测试称呼，不含真实身份信息。
+
+---
+
+# 第二章：在线版重构（2026-11，参加 2026 Qoder 高校创造力大赛）
+
+> 2026-11-06 起，项目换壳参加 **2026 Qoder 高校创造力大赛 · StudyHack 赛道**（天池承办；作品帖截止 2026-11-30 18:00）。以上第一章为原 PowerContext 2026 赛道版本的真实记录，全部保留；本章记录重构过程。
+
+## 换壳决策
+
+- 原版本依赖本机 Python + 嵌入式 seekdb + PowerContext HTTP server，评审无法“点开即用”；用户重装 Windows 后本机也没有 Python。
+- 与用户确认方向：**只留在线 Demo** —— 放弃后端，整体移植为纯浏览器静态应用，发布到 Qoder Sites 公开访问。
+- 原创性无风险（全部为自有代码），旧版本完整保留在基线提交 `923c7a5`，随时可找回。
+
+## Qoder 参与方式（本章）
+
+| 环节 | Qoder 具体做了什么 | 可核对产出 |
+| --- | --- | --- |
+| 仓库重建 | 在新机器上把源码整理为独立 git 仓库，打基线提交，配置 `.gitattributes` | `git log`：`923c7a5` 基线 → `30aabc5` 重构 |
+| 引擎移植 | 把 coach.py / store.py / memory.py / embedding.py / trace.py 逐一移植为浏览器 ES 模块，保持规则与分数语义一致 | `app/frontend/assets/js/engine/*.js`（9 个模块） |
+| 检索复刻 | 全文 + 向量双通道、RRF 融合、0.72/0.28 加权、`score_parts` 公开；blake2b 不可用改为 FNV-1a 特征哈希 | `engine/retrieval.js`、`engine/embed.js` |
+| 接口兼容 | 重写 `api.js` 为薄委托层，方法签名不变，7 个视图只改文案 | `assets/js/api.js`、`assets/js/views/` |
+| Windows 适配 | 零依赖 Node 静态服务器替代 bash/Python 脚本 | `scripts/serve.mjs` |
+| 浏览器验收 | browser-use MCP 实机走完诊断 → 报告 → 计划 → 练习（答错）→ 进度 → 轨迹；另用 evaluate_script 跑 36 项引擎断言全部通过 | 本章“验证记录” |
+
+## 开发时间线（本章）
+
+### 2026-11-06 — 仓库整理与基线
+
+- 源码整理为独立仓库 `gapcoach/`，`git init` 后打基线提交 `923c7a5`（含旧版全部后端与站点）。
+- 新增 `.gitattributes`（`* text=auto eol=lf`，图片二进制）。
+
+### 2026-11-06 — 引擎移植
+
+- 新增 `engine/`：`time` / `trace`（环形缓冲 200）/ `embed`（FNV-1a 特征哈希 384 维）/ `retrieval`（双通道 RRF）/ `memory`（weakness/strength/session，artifact + revision + 解除生命周期）/ `storage`（attempts + mastery + 相似错题余弦）/ `coach`（诊断选题、计划排序、判分、恢复）/ `data`（content.json 缓存加载）/ `index`（对外门面）。
+- 掌握度规则、诊断 ±12、练习 +10/+15/−15、薄弱 <60、稳固 ≥85 且连对 ≥3 等数值与原后端完全一致。
+- 数据落点：localStorage `gapcoach.store.v1` / `gapcoach.memory.v1` / `gapcoach.session.v1`。
+
+### 2026-11-06 — 前端换壳与验证
+
+- `api.js` 改为委托 engine，签名不变；7 个视图仅替换 seekdb / PowerContext 文案（证据行、记忆提示、轨迹过滤器 `retrieval/memory/gapcoach`、进度页数据落点等）。
+- 修复真实问题：`content_ready` 轨迹重复 2 次 —— `ensureCourse` 与 `pollHealth` 并发各拉一次 content.json；改为缓存 in-flight Promise，并加 catch 重置避免失败后缓存污染。
+- 引擎断言：36/36 通过（会话 → 诊断识别 2 薄弱点 26 → 计划薄弱优先 → 答错 26→11 带证据与记忆事件 → 进度 → 同称呼恢复同 Scope → 个性化证据排序 → 轨迹 kinds → health 15 材料/30 题）。
+- UI 实机走查：清空 localStorage 后键盘完成 10 题诊断 → 报告 → 计划 → 练习答错反馈 → 进度 → 轨迹，截图确认视觉系统未回归。
+
+### 2026-11-06 — 清理与提交
+
+- 删除 `app/backend/`、`requirements.txt`、`.env.example`、旧 bash/Python 脚本、旧 `site/` 展示页与空 `config/`；旧版 verify 证据归档至 `docs/legacy/verify-powercontext-era.json`。
+- 重写 `.gitignore`（锚定 `/data/`，避免误伤 `app/frontend/assets/data/content.json`）。
+- 提交 `30aabc5`：49 files changed，+1054 / −4628。
+
+## 未完成与边界（本章）
+
+- Qoder Sites 尚指向旧展示页，需重新发布为 `app/frontend/` 在线应用（发布前经用户确认）。
+- 在线版真实运行截图待重新生成；天池作品帖草稿见 `docs/SUBMISSION_POST.md`，发帖前需用户补充 Qoder 账号、仓库地址与团队信息。
+- 公开 GitHub 仓库尚未创建/推送。
+- 使用效果数据仍未收集，不虚构。
