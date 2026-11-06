@@ -181,9 +181,15 @@
 - 重写 `.gitignore`（锚定 `/data/`，避免误伤 `app/frontend/assets/data/content.json`）。
 - 提交 `30aabc5`：49 files changed，+1054 / −4628。
 
+### 2026-11-06 — 天池作品帖发布
+
+- 作品帖发布：<https://tianchi.aliyun.com/forum/post/1094959>（17:06，账号 nick5167734371，关联比赛 532536，标签"学习心得"，提交时状态"审核中"、匿名可见）。
+- 发帖由 Qoder 驱动 Lexmount 云浏览器完成：用户自行扫码登录；正文 6704 字 Markdown 注入 mditor；11 张截图因云浏览器无法选本地文件，改为 base64 分块送入页面后调用天池自有上传链路（`/proxy/home/oss/getUserUploadImageSig` 取签名 → POST OSS → `cdnHost + key`），全部落在 `static.tianchi.aliyun.com`，预览 11/11 加载成功。
+- 已知平台渲染问题：帖子详情页把标题中的中文破折号显示为字面 `&mdash;`（他人参赛帖同样），列表页正常；尝试改标题为冒号版时云浏览器会话在提交瞬间断开，编辑未生效，遂保留与其余参赛帖一致的破折号标题。
+
 ## 未完成与边界（本章）
 
 - Qoder Sites 已在当前账号下新站发布：<https://gapcoach-2i2bg8e17m0.qoder.zone>（2026-11-06，访问策略 public，线上实测内容加载正常）。旧站 `gapcoach-2pf0jobp824.qoder.zone` 属旧账号，无法管理，不再引用。
-- 在线版真实运行截图已生成：`docs/screenshots/` 7 张（首页、诊断、报告、计划、练习反馈、进度、技术轨迹），2026-11-06 由 Lexmount 云浏览器在公开站点 1440×900 实跑截取；天池作品帖草稿见 `docs/SUBMISSION_POST.md`，发帖前需用户补充 Qoder 账号、仓库地址与团队信息。
+- 在线版真实运行截图已生成：`docs/screenshots/` 7 张（首页、诊断、报告、计划、练习反馈、进度、技术轨迹），2026-11-06 由 Lexmount 云浏览器在公开站点 1440×900 实跑截取；作品帖已发布 <https://tianchi.aliyun.com/forum/post/1094959>，正文定稿见 `docs/SUBMISSION_POST.md`。
 - 公开 GitHub 仓库已推送：<https://github.com/kjore/gapcoach>（main；2026-11-06；API 校验 `private: false`）。本机直连 github.com 不通，推送经本地代理 7897 一次性完成，未写入 git 配置。
 - 使用效果数据仍未收集，不虚构。
