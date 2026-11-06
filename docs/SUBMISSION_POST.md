@@ -23,7 +23,7 @@ StudyHack（学习提效）
 
 ## 源码仓库
 
-【待填：公开 GitHub 仓库地址】
+<https://github.com/kjore/gapcoach>
 
 ## Qoder 账号
 
